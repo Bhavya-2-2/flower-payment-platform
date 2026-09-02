@@ -72,3 +72,17 @@ def test_get_payment(client):
 
     assert response.status_code == 200
     assert response.json["payment_id"] == payment_id
+
+
+def test_invalid_amount_type(client):
+    response = client.post(
+        "/payments",
+        json={
+            "customer_id": "C1001",
+            "amount": "five hundred",
+            "currency": "INR"
+        }
+    )
+
+    assert response.status_code == 400
+    assert response.json["error"] == "amount must be a number"

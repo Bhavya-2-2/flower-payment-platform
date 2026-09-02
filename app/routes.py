@@ -1,6 +1,7 @@
 from flask import Blueprint, request
 import uuid
 
+
 payment_routes = Blueprint("payment_routes", __name__)
 
 payments = {}
@@ -17,15 +18,23 @@ def create_payment():
     amount = data.get("amount")
     currency = data.get("currency")
 
+    # Validate amount type
+    if not isinstance(amount, (int, float)):
+        return {"error": "amount must be a number"}, 400
+
+    # Validate customer
     if not customer_id:
         return {"error": "customer_id is required"}, 400
 
-    if amount is None or amount <= 0:
+    # Validate amount value
+    if amount <= 0:
         return {"error": "amount must be greater than zero"}, 400
 
+    # Validate currency
     if currency not in ["INR", "USD"]:
         return {"error": "Unsupported currency"}, 400
 
+    # Generate payment ID
     payment_id = str(uuid.uuid4())
 
     payment = {
