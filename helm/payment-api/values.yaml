@@ -1,0 +1,11 @@
+replicaCount: 3
+
+image:
+  repository: flower-payment-api
+  tag: "1.0"
+  pullPolicy: Never
+
+service:
+  type: NodePort
+  port: 80
+  targetPort: 5000

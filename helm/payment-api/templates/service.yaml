@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: payment-api-helm
+spec:
+  type: {{ .Values.service.type }}
+  selector:
+    app: payment-api-helm
+  ports:
+    - protocol: TCP
+      port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}

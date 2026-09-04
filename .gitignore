@@ -5,4 +5,6 @@ __pycache__/
 .env
 .terraform/
 terraform.tfstate
-terraform.tfstate.*
+terraform.tfstate.*minikube-linux-amd64
+.terraform.lock.hcl
+minikube-linux-amd64
