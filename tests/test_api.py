@@ -86,3 +86,31 @@ def test_invalid_amount_type(client):
 
     assert response.status_code == 400
     assert response.json["error"] == "amount must be a number"
+
+@pytest.mark.parametrize("customer_id", [None, 123, True, "", "   "])
+def test_rejects_invalid_customer_id(client, customer_id):
+    response = client.post(
+        "/payments",
+        json={
+            "customer_id": customer_id,
+            "amount": 100,
+            "currency": "INR",
+        },
+    )
+
+    assert response.status_code == 400
+    assert response.json["error"] == "customer_id must be a non-empty string"
+
+
+def test_trims_whitespace_from_customer_id(client):
+    response = client.post(
+        "/payments",
+        json={
+            "customer_id": "  C1001  ",
+            "amount": 100,
+            "currency": "INR",
+        },
+    )
+
+    assert response.status_code == 201
+    assert response.json["customer_id"] == "C1001"
