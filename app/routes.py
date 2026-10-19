@@ -17,8 +17,10 @@ def create_payment():
     amount = data.get("amount")
     currency = data.get("currency")
 
-    if not customer_id:
-        return {"error": "customer_id is required"}, 400
+    if not isinstance(customer_id, str) or not customer_id.strip():
+        return {"error": "customer_id must be a non-empty string"}, 400
+
+    customer_id = customer_id.strip()
 
     if not isinstance(amount, (int, float)):
         return {"error": "amount must be a number"}, 400
