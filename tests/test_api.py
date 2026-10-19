@@ -86,3 +86,16 @@ def test_invalid_amount_type(client):
 
     assert response.status_code == 400
     assert response.json["error"] == "amount must be a number"
+
+@pytest.mark.parametrize("amount", [float("nan"), float("inf"), float("-inf"), True])
+def test_rejects_non_finite_or_boolean_amount(client, amount):
+    response = client.post(
+        "/payments",
+        json={
+            "customer_id": "C1001",
+            "amount": amount,
+            "currency": "INR",
+        },
+    )
+
+    assert response.status_code == 400
